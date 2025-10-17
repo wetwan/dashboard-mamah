@@ -12,11 +12,11 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <div >
+    <div className=" text-foreground bg-gray-900 dark:text-white transition-colors duration-300">
       <nav className="border max-w-full py-5 flex  md:px-8 lg:px-16 xl:32 2xl:px-64 px-4 ">
         <Logo />
       </nav>
-      <body>{children}</body>
+      <main>{children}</main>
     </div>
   );
 }
