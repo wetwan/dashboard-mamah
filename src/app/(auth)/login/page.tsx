@@ -142,17 +142,19 @@
 import React, { useState } from "react";
 import Link from "next/link";
 import { Eye, EyeClosed, Lock, Mail } from "lucide-react";
-import { useThemeStore } from "@/src/store/themeStore"; // Optional, for dynamic toggle
+import Themetoggle from "@/components/Themetoggle";
 
 const Login = () => {
   const [passwordShow, setPasswordShow] = useState(false);
-  const { theme, toggleTheme } = useThemeStore(); // optional
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-background text-foreground dark:bg-gray-900 dark:text-white transition-colors duration-300">
+    <div className="min-h-screen flex items-center justify-center">
+        <Themetoggle />
       <div className="w-full max-w-md px-6 py-10">
-        <form className="border shadow-lg rounded-lg p-8 flex flex-col items-center bg-white dark:bg-gray-800 transition-colors duration-300">
-          <h1 className="text-4xl font-bold uppercase tracking-wider mb-10">Login</h1>
+        <form className="border shadow-lg rounded-lg p-8 flex flex-col items-center bg-gray-800 transition-colors duration-300">
+          <h1 className="text-4xl font-bold uppercase tracking-wider mb-10">
+            Login
+          </h1>
 
           <div className="w-full mb-5">
             <div className="flex items-center gap-3 px-3 py-4 w-full bg-gray-200 dark:bg-gray-700 border rounded focus-within:ring-2 focus-within:ring-[#7971ea]">
