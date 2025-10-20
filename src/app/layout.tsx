@@ -27,7 +27,7 @@ export default function RootLayout({
   return (
     <html lang="en" suppressHydrationWarning>
       <body
-        className={`${geistSans.variable} ${geistMono.variable} antialiased transition-colors duration-300`}
+      className={`${outFitSans.variable} ${geistSans.variable} ${geistMono.variable} antialiased transition-colors duration-300`}
       >
         <ReactQueryProvider>
           <ThemeProvider>
