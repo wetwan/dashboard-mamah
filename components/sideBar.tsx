@@ -3,9 +3,11 @@ import Logo from "./logo";
 import { useSideBar } from "@/src/store/sidebarStore";
 import { Sidebar, X } from "lucide-react";
 import { Button } from "./ui/button";
+import { useTheme } from "@/src/store/themeStore";
 
 const SideBar = () => {
   const { sideBar, toggleSideBar } = useSideBar();
+  const { colors } = useTheme();
 
   const openSidebar = sideBar === "open";
   return (
@@ -24,7 +26,7 @@ const SideBar = () => {
         <Button
           onClick={toggleSideBar}
           variant="outline"
-          className="hover:border-red-600 hover:text-red-600"
+          className=" text-text1 px-4 py-2 rounded "
         >
           {!openSidebar ? <Sidebar size={32} /> : <X size={32} />}
         </Button>

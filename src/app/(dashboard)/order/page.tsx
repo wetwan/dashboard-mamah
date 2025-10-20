@@ -11,6 +11,7 @@ import {
   PaginationNext,
   PaginationPrevious,
 } from "@/components/ui/pagination";
+import { useTheme } from "@/src/store/themeStore";
 
 interface OrderItem {
   name: string;
@@ -75,6 +76,8 @@ export default function OrdersPage() {
   const [page, setPage] = useState(1);
   const limit = 10;
 
+  const { colors } = useTheme();
+
   const { data, isLoading, isError } = useQuery<OrdersResponse>({
     queryKey: ["orders", page],
     queryFn: async () => {
@@ -102,14 +105,14 @@ export default function OrdersPage() {
             key={order._id}
             className="border rounded-lg p-4 shadow-sm bg-white"
           >
-            <h2 className="text-lg font-semibold">
+            <h2 className="text-lg font-semibold" style={{color:colors.text3}}>
               {order.shippingAddress.fullName}
             </h2>
             <p className="text-sm text-gray-600">
               {order.shippingAddress.email}
             </p>
 
-            <div className="mt-2">
+            <div className="mt-2" style={{color:colors.text2}}>
               <p>
                 Status: <span className="capitalize">{order.status}</span>
               </p>

@@ -1,13 +1,11 @@
 "use client";
-
-import { getThemeColors } from "@/src/hook/theme";
 import { useTheme } from "@/src/store/themeStore";
 import { useRouter } from "next/navigation";
 import React from "react";
 
 const Logo = () => {
-  const { theme } = useTheme();
-  const colors = getThemeColors(theme);
+  const { colors } = useTheme();
+
   const router = useRouter();
   return (
     <div
