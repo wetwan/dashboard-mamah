@@ -1,37 +1,27 @@
+"use client"; // make sure this is a client component
+
 import { create } from "zustand";
 import { persist, createJSONStorage } from "zustand/middleware";
 
 type Theme = "light" | "dark";
 
-interface ThemeState {
+interface ThemeStore {
   theme: Theme;
   toggleTheme: () => void;
   setTheme: (theme: Theme) => void;
 }
 
-export const useThemeStore = create<ThemeState>()(
+export const useTheme = create<ThemeStore>()(
   persist(
-    (set, get) => ({
+    (set) => ({
       theme: "light",
-
       toggleTheme: () =>
-        set({ theme: get().theme === "light" ? "dark" : "light" }),
-
+        set((state) => ({ theme: state.theme === "light" ? "dark" : "light" })),
       setTheme: (theme) => set({ theme }),
     }),
     {
       name: "theme-storage",
-
-      // ✅ use createJSONStorage for correct typing
-      storage: createJSONStorage(() =>
-        typeof window !== "undefined"
-          ? localStorage
-          : {
-              getItem: () => null,
-              setItem: () => {},
-              removeItem: () => {},
-            }
-      ),
+      storage: createJSONStorage(() => localStorage),
     }
   )
 );

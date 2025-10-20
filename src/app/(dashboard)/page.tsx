@@ -4,56 +4,60 @@ import React from "react";
 
 import { Zap } from "lucide-react";
 import Themetoggle from "@/components/Themetoggle";
+import { useTheme } from "@/src/store/themeStore";
+import { getThemeColors } from "@/src/hook/theme";
 
 // --- Helper Components ---
 
-interface ColorCardProps {
-  title: string;
-  bgClass: string;
-  textClass: string;
-  radiusClass: string;
-}
+// interface ColorCardProps {
+//   title: string;
+//   bgClass: string;
+//   textClass: string;
+//   radiusClass: string;
+// }
 
-const ColorCard: React.FC<ColorCardProps> = ({
-  title,
-  bgClass,
-  textClass,
-  radiusClass,
-}) => (
-  <div
-    className={`p-6 ${bgClass} ${textClass} ${radiusClass} shadow-md flex flex-col items-center justify-center min-h-[120px] transition-colors duration-500`}
-  >
-    <p className="text-xl font-bold">{title}</p>
-    <p className="text-sm opacity-80 mt-1">{radiusClass}</p>
-  </div>
-);
+// const ColorCard: React.FC<ColorCardProps> = ({
+//   title,
+//   bgClass,
+//   textClass,
+//   radiusClass,
+// }) => (
+//   <div
+//     className={`p-6 ${bgClass} ${textClass} ${radiusClass} shadow-md flex flex-col items-center justify-center min-h-[120px] transition-colors duration-500`}
+//   >
+//     <p className="text-xl font-bold">{title}</p>
+//     <p className="text-sm opacity-80 mt-1">{radiusClass}</p>
+//   </div>
+// );
 
-interface ChartSwatchProps {
-  index: number;
-}
+// interface ChartSwatchProps {
+//   index: number;
+// }
 
-const ChartSwatch: React.FC<ChartSwatchProps> = ({ index }) => (
-  <div
-    className={`w-full h-8 bg-chart-${index} rounded-sm transition-colors duration-500`}
-  ></div>
-);
+// const ChartSwatch: React.FC<ChartSwatchProps> = ({ index }) => (
+//   <div
+//     className={`w-full h-8 bg-chart-${index} rounded-sm transition-colors duration-500`}
+//   ></div>
+// );
 
 // --- Main Component ---
 
 const DashBoard: React.FC = () => {
+  const { theme } = useTheme();
+  const colors = getThemeColors(theme);
   return (
-    <div className="min-h-screen p-4 sm:p-8 bg-background text-foreground transition-colors duration-500 font-sans">
+    <div className="min-h-screen p-4 sm:p-8 bg-background text-foreground transition-colors duration-500 font-sans border bg-amber-300 dark:bg-amber-950">
       <div className="max-w-4xl mx-auto space-y-12">
         {/* Header */}
         <header className="flex justify-between items-center pb-4 border-b border-border/50">
           <h1 className="text-3xl sm:text-4xl font-extrabold tracking-tight flex items-center">
-            <Zap className="w-8 h-8 mr-2 text-primary" />
+            <Zap className="w-8 h-8 mr-2 text-secondary" />
           </h1>
           <Themetoggle />
         </header>
 
         {/* Core UI Palette */}
-        <section className="space-y-4">
+        {/* <section className="space-y-4">
           <h2 className="text-2xl font-semibold border-l-4 border-primary pl-3">
             Core UI Palette
           </h2>
@@ -83,10 +87,10 @@ const DashBoard: React.FC = () => {
               radiusClass="rounded-md"
             />
           </div>
-        </section>
+        </section> */}
 
         {/* Utilities & Accents */}
-        <section className="space-y-4">
+        {/* <section className="space-y-4">
           <h2 className="text-2xl font-semibold border-l-4 border-accent pl-3">
             Utilities & Accents
           </h2>
@@ -126,10 +130,10 @@ const DashBoard: React.FC = () => {
               </p>
             </div>
           </div>
-        </section>
+        </section> */}
 
         {/* Chart Colors */}
-        <section className="space-y-4">
+        {/* <section className="space-y-4">
           <h2 className="text-2xl font-semibold border-l-4 border-chart-3 pl-3">
             Chart Colors
           </h2>
@@ -138,10 +142,10 @@ const DashBoard: React.FC = () => {
               <ChartSwatch key={i} index={i} />
             ))}
           </div>
-        </section>
+        </section> */}
 
         {/* Sidebar Simulation */}
-        <section className="space-y-4">
+        {/* <section className="space-y-4">
           <h2 className="text-2xl font-semibold border-l-4 border-sidebar-primary pl-3">
             Sidebar Simulation
           </h2>
@@ -160,7 +164,15 @@ const DashBoard: React.FC = () => {
               <p className="opacity-70">Main Content Area</p>
             </div>
           </div>
-        </section>
+        </section> */}
+
+        <div
+          className="py-6 px-20 "
+          style={{ backgroundColor: colors.primary, color: colors.text2 }}
+        >
+          {" "}
+          google
+        </div>
       </div>
     </div>
   );

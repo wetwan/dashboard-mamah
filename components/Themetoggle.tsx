@@ -1,24 +1,27 @@
-import React from "react";
-import { useThemeStore } from "@/src/store/themeStore";
-import { Sun, Moon } from "lucide-react";
-import { Button } from "./ui/button";
+"use client";
 
-const Themetoggle = () => {
-  const { theme, toggleTheme } = useThemeStore();
+import { useTheme } from "@/src/store/themeStore";
+import { Sun, Moon } from "lucide-react";
+
+export default function ThemeToggle() {
+  const { theme, toggleTheme } = useTheme();
   const isDark = theme === "dark";
-  const Icon = isDark ? Sun : Moon;
 
   return (
-    <div>
-      <Button
-        onClick={toggleTheme}
-        className="p-3 rounded-full bg-secondary text-secondary-foreground hover:bg-secondary/80 ring-2 ring-ring/50 transition-all duration-300"
-        aria-label={`Switch to ${isDark ? "light" : "dark"} mode`}
-      >
-        <Icon className="w-5 h-5 transition-all duration-300 transform rotate-0 scale-100" />
-      </Button>
-    </div>
+    <button
+      onClick={() => {
+        toggleTheme();
+      }}
+      className="p-3 rounded-full bg-gray-200 dark:bg-gray-700 text-gray-800 dark:text-gray-200 
+                 hover:bg-gray-300 dark:hover:bg-gray-600 
+                 transition-all duration-300 transform active:scale-95 focus:outline-none"
+      aria-label={`Switch to ${isDark ? "light" : "dark"} mode`}
+    >
+      {isDark ? (
+        <Sun className="w-5 h-5 transition-transform duration-300" />
+      ) : (
+        <Moon className="w-5 h-5 transition-transform duration-300" />
+      )}
+    </button>
   );
-};
-
-export default Themetoggle;
+}

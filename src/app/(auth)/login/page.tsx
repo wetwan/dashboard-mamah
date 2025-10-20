@@ -138,6 +138,8 @@
 // };
 
 // export default Login;
+
+
 "use client";
 import React, { useState } from "react";
 import Link from "next/link";
@@ -148,16 +150,19 @@ const Login = () => {
   const [passwordShow, setPasswordShow] = useState(false);
 
   return (
-    <div className="min-h-screen flex items-center justify-center">
+    <div className="min-h-screen flex items-center justify-center bg-gray-300 dark:bg-gray-600 transition-colors duration-300">
+      <div className="absolute top-5 right-5">
         <Themetoggle />
+      </div>
+
       <div className="w-full max-w-md px-6 py-10">
-        <form className="border shadow-lg rounded-lg p-8 flex flex-col items-center bg-gray-800 transition-colors duration-300">
+        <form className="shadow-lg rounded-lg p-8 flex flex-col items-center bg-white dark:bg-gray-800 transition-colors duration-300">
           <h1 className="text-4xl font-bold uppercase tracking-wider mb-10">
             Login
           </h1>
 
           <div className="w-full mb-5">
-            <div className="flex items-center gap-3 px-3 py-4 w-full bg-gray-200 dark:bg-gray-700 border rounded focus-within:ring-2 focus-within:ring-[#7971ea]">
+            <div className="flex items-center gap-3 px-3 py-4 w-full bg-gray-100 dark:bg-gray-700 border rounded focus-within:ring-2 focus-within:ring-[#7971ea] transition-colors duration-300">
               <Mail size={20} />
               <input
                 type="email"
@@ -168,7 +173,7 @@ const Login = () => {
           </div>
 
           <div className="w-full mb-5">
-            <div className="flex items-center gap-3 px-3 py-4 w-full bg-gray-200 dark:bg-gray-700 border rounded focus-within:ring-2 focus-within:ring-[#7971ea]">
+            <div className="flex items-center gap-3 px-3 py-4 w-full bg-gray-100 dark:bg-gray-700 border rounded focus-within:ring-2 focus-within:ring-[#7971ea] transition-colors duration-300">
               <Lock size={20} />
               <input
                 type={passwordShow ? "text" : "password"}
@@ -189,7 +194,7 @@ const Login = () => {
             Login
           </button>
 
-          <p className="mt-6 text-center text-sm text-gray-600 dark:text-gray-300">
+          <p className="mt-6 text-center text-sm text-gray-700 dark:text-gray-300">
             Not a user yet?{" "}
             <Link href="/signup" className="text-[#7971ea] font-medium">
               Sign up!
