@@ -3,7 +3,6 @@
 import React from "react";
 
 import { Zap } from "lucide-react";
-import Themetoggle from "@/components/Themetoggle";
 import { useTheme } from "@/src/store/themeStore";
 import { getThemeColors } from "@/src/hook/theme";
 
@@ -46,14 +45,13 @@ const DashBoard: React.FC = () => {
   const { theme } = useTheme();
   const colors = getThemeColors(theme);
   return (
-    <div className="min-h-screen p-4 sm:p-8 bg-background text-foreground transition-colors duration-500 font-sans border bg-amber-300 dark:bg-amber-950">
+    <div className="min-h-screen p-4 sm:p-8  text-foreground transition-colors duration-500 font-sans border bg-amber-300 dark:bg-amber-950">
       <div className="max-w-4xl mx-auto space-y-12">
         {/* Header */}
         <header className="flex justify-between items-center pb-4 border-b border-border/50">
           <h1 className="text-3xl sm:text-4xl font-extrabold tracking-tight flex items-center">
             <Zap className="w-8 h-8 mr-2 text-secondary" />
           </h1>
-          <Themetoggle />
         </header>
 
         {/* Core UI Palette */}

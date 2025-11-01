@@ -5,7 +5,5 @@ export default function RootLayout({
 }: Readonly<{
   children: React.ReactNode;
 }>) {
-  return <ProductLayout>
-  
-    {children}</ProductLayout>;
+  return <ProductLayout>{children}</ProductLayout>;
 }

@@ -3,6 +3,7 @@
 import React from "react";
 import { useTheme } from "@/src/store/themeStore";
 import { getThemeColors } from "@/src/hook/theme";
+import DashboardHeader from "./dashboardHeader";
 
 const DashboardLayout = ({ children }: { children: React.ReactNode }) => {
   const { theme } = useTheme();
@@ -14,10 +15,13 @@ const DashboardLayout = ({ children }: { children: React.ReactNode }) => {
       style={{
         backgroundColor: colors.background,
         color: colors.text1,
-        height: '100vh'
+        height: "100vh",
       }}
     >
-      <main>{children}</main>
+      <main>
+        <DashboardHeader />
+        {children}
+      </main>
     </div>
   );
 };
