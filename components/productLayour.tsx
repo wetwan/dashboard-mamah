@@ -6,7 +6,7 @@ import MobileSideBar from "./mobileSideBar";
 
 const ProductLayout = ({ children }: { children: React.ReactNode }) => {
   return (
-    <div className="flex border relative">
+    <div className="flex relative">
       <div>
         <SideBar />
         <MobileSideBar />

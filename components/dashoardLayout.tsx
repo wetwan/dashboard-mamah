@@ -15,7 +15,7 @@ const DashboardLayout = ({ children }: { children: React.ReactNode }) => {
       style={{
         backgroundColor: colors.background,
         color: colors.text1,
-        height: "100vh",
+    
       }}
     >
       <main>
