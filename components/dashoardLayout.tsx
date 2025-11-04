@@ -19,7 +19,7 @@ const DashboardLayout = ({ children }: { children: React.ReactNode }) => {
       }}
     >
       <main>
-        <DashboardHeader />
+    
         {children}
       </main>
     </div>

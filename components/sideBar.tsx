@@ -27,12 +27,12 @@ const SideBar = () => {
   const openSidebar = sideBar === "open";
   return (
     <div
-      className={`h-screen flex flex-col items-center fixed top-20 border-0 left-3  justify-between   duration-500 overflow-hidden transition-all max-lg:hidden ${
+      className={`flex flex-col h-screen items-center justify-between  p-2  duration-500 overflow-hidden transition-all max-lg:hidden ${
         openSidebar ? "w-[200px]" : "w-[85px]"
       }`}
     >
-      <div className="w-full">
-        <div className="mt-10 px-4 w-full flex-1">
+      <div className="border p-1 w-full">
+        <div className=" px-2 py-2">
           {menu.map(({ name, link, Icon }, i) => {
             const active = pathname === link;
             const isHovered = hoverIndex === i;
@@ -51,7 +51,7 @@ const SideBar = () => {
                     : colors.card, // default
                   transition: "background-color 0.2s ease",
                 }}
-                className={`mt-3 rounded-lg flex items-center gap-3 py-3 px-3 h-14 capitalize`}
+                className={`mt-3 rounded-lg flex items-center gap-3 py-3 px-3 h-14 capitalize justify-center`}
               >
                 <Icon size={20} />
                 <span
@@ -83,65 +83,64 @@ const SideBar = () => {
         </div>
       </div>
 
-<div className="w-full">
-  <div className="mb-5 w-full ">
-        {openSidebar ? (
-          <div
-            style={{
-              backgroundColor: colors.text2, // default
-              transition: "background-color 0.2s ease",
-            }}
-            className={`mt-3 w-5/6  mx-auto rounded-lg flex items-center gap-3 py-3 px-3 h-14 capitalize`}
-          >
-            <UserCircle color={colors.blue1} size={20} />
-            <span
-              className={`
+      <div className="w-full">
+        <div className="mb-5 w-full border p-1">
+          {openSidebar ? (
+            <div
+              style={{
+                backgroundColor: colors.text2, // default
+                transition: "background-color 0.2s ease",
+              }}
+              className={`mt-3 w-5/6  mx-auto rounded-lg flex items-center gap-3 py-3 px-3 h-14 capitalize`}
+            >
+              <UserCircle color={colors.blue1} size={20} />
+              <span
+                className={`
     whitespace-nowrap transition-all duration-300
     ${openSidebar ? "opacity-100 ml-2" : "opacity-0 -ml-6"}
   `}
+              >
+                profile
+              </span>
+            </div>
+          ) : (
+            <button
+              style={{ backgroundColor: colors.text2 }}
+              className="w-12 h-12 border rounded-full flex-col flex items-center justify-center mx-auto hover:bg-red-800"
             >
-              profile
-            </span>
-          </div>
-        ) : (
-          <button
-            style={{ backgroundColor: colors.text2 }}
-            className="w-12 h-12 border rounded-full flex-col flex items-center justify-center mx-auto hover:bg-red-800"
-          >
-            <UserCircle color={colors.blue1} />
-          </button>
-        )}
-      </div>
-      <div className="mb-40 w-full ">
-        {openSidebar ? (
-          <div
-            style={{
-              backgroundColor: colors.card, // default
-              transition: "background-color 0.2s ease",
-            }}
-            className={`mt-3 w-5/6  mx-auto rounded-lg flex items-center gap-3 py-3 px-3 h-14 capitalize`}
-          >
-            <LogOutIcon color={colors.text2} size={20} />
-            <span
-              className={`
+              <UserCircle color={colors.blue1} />
+            </button>
+          )}
+        </div>
+        <div className="mb-40 w-full ">
+          {openSidebar ? (
+            <div
+              style={{
+                backgroundColor: colors.card, // default
+                transition: "background-color 0.2s ease",
+              }}
+              className={`mt-3 w-5/6  mx-auto rounded-lg flex items-center gap-3 py-3 px-3 h-14 capitalize`}
+            >
+              <LogOutIcon color={colors.text2} size={20} />
+              <span
+                className={`
     whitespace-nowrap transition-all duration-300
     ${openSidebar ? "opacity-100 ml-2" : "opacity-0 -ml-6"}
   `}
+              >
+                log out
+              </span>
+            </div>
+          ) : (
+            <button
+              style={{ backgroundColor: colors.text3 }}
+              className="w-12 h-12 border rounded-full flex-col flex items-center justify-center mx-auto hover:bg-red-800"
             >
-              log out
-            </span>
-          </div>
-        ) : (
-          <button
-            style={{ backgroundColor: colors.text3 }}
-            className="w-12 h-12 border rounded-full flex-col flex items-center justify-center mx-auto hover:bg-red-800"
-          >
-            <LogOutIcon color={colors.card} />
-          </button>
-        )}
+              <LogOutIcon color={colors.card} />
+            </button>
+          )}
+        </div>
       </div>
-</div>
-      
     </div>
   );
 };

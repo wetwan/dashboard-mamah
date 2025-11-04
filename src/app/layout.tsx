@@ -1,7 +1,7 @@
 import DashboardLayout from "@/components/dashoardLayout";
 import "./globals.css";
 
-import { Geist, Geist_Mono , Outfit} from "next/font/google";
+import { Geist, Geist_Mono, Outfit } from "next/font/google";
 import { ThemeProvider } from "../providers/ThemeProvider";
 import { ReactQueryProvider } from "./ReactQueryProvider";
 
@@ -27,7 +27,7 @@ export default function RootLayout({
   return (
     <html lang="en" suppressHydrationWarning>
       <body
-      className={`${outFitSans.variable} ${geistSans.variable} ${geistMono.variable} antialiased transition-colors duration-300`}
+        className={`${outFitSans.variable} ${geistSans.variable} ${geistMono.variable} antialiased transition-colors duration-300 h-screen`}
       >
         <ReactQueryProvider>
           <ThemeProvider>

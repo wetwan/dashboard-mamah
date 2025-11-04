@@ -3,7 +3,7 @@
 import React from "react";
 import { useSideBar } from "@/src/store/sidebarStore";
 import { useTheme } from "@/src/store/themeStore";
-import { usePathname } from "next/navigation";
+import { usePathname, useRouter } from "next/navigation";
 import {
   DollarSignIcon,
   HomeIcon,
@@ -29,15 +29,17 @@ const MobileSideBar = () => {
     useSearch();
 
   const openSidebar = sideBar === "open";
+  const router = useRouter();
 
   return (
     <div
-      className={`h-screen bg-white flex flex-col fixed top-36 items-center justify-between transition-all duration-300 lg:hidden z-40 ${
+      className={`h-screen  flex flex-col items-center p-2 justify-between border transition-all duration-300 lg:hidden z-40 ${
         openSidebar ? "w-[200px] absolute" : "w-[85px]"
       }`}
+      style={{ backgroundColor: openSidebar ? colors.background : "" }}
     >
-      <div className="">
-        <div className="my-10 px-4 w-full flex-1">
+      <div className="border p-2 w-full">
+        <div className="w-full mb-5 flex-1">
           {menu.map(({ name, link, Icon }) => {
             const active = pathname === link;
 
@@ -67,14 +69,14 @@ const MobileSideBar = () => {
             );
           })}
         </div>
-        <div className=" w-full ">
+        <div className="w-full">
           {openSidebar ? (
             <div
               style={{
                 // backgroundColor: colors.text2, // default
                 transition: "background-color 0.2s ease",
               }}
-              className={`w-5/6  mx-auto rounded-lg flex items-center gap-3 py-3 relative  border px-3 h-14 capitalize`}
+              className={`w-full  mx-auto rounded-lg flex items-center gap-3 py-3 relative  border px-3 h-14 capitalize`}
             >
               <Search color={colors.blue1} size={20} />
               <input
@@ -95,7 +97,10 @@ const MobileSideBar = () => {
             <button
               style={{ backgroundColor: colors.text2 }}
               className="w-12 h-12 border rounded-full flex-col flex items-center justify-center mx-auto "
-              onClick={toggleSearch}
+              onClick={() => {
+                router.push("/");
+                toggleSearch();
+              }}
             >
               <Search color={colors.blue1} />
             </button>
@@ -103,7 +108,7 @@ const MobileSideBar = () => {
         </div>
       </div>
 
-      <div className="">
+      <div className="mb-40 w-full">
         <div className="mb-5 w-full ">
           {openSidebar ? (
             <div
@@ -132,7 +137,7 @@ const MobileSideBar = () => {
             </button>
           )}
         </div>
-        <div className="mb-20 w-full ">
+        <div className="w-full ">
           {openSidebar ? (
             <div
               style={{

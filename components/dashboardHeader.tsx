@@ -13,10 +13,10 @@ const DashboardHeader = () => {
 
   const openSidebar = sideBar === "open";
   return (
-    <div className="flex items-center fixed w-full bg-green-500 top-0 left-0 right-0 border-0 justify-between lg:px-5 px-3">
+    <div className="flex items-center w-full  border justify-between lg:px-5 px-3">
       <div
-        className={`flex flex-row-reverse items-center lg:px-4 p-1 lg:w-[250px] 
-          justify-between py-5 
+        className={`flex flex-row-reverse items-center lg:px-4 p-1 gap-10
+          lg:justify-between py-5 
         `}
       >
         <Logo />

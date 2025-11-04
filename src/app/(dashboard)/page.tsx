@@ -6,6 +6,7 @@ import { useTheme } from "@/src/store/themeStore";
 import { getThemeColors } from "@/src/hook/theme";
 import { useSearch } from "@/src/store/searchStore";
 import Search from "@/components/search";
+import { X } from "lucide-react";
 
 // --- Helper Components ---
 
@@ -45,23 +46,29 @@ import Search from "@/components/search";
 const DashBoard: React.FC = () => {
   const { theme } = useTheme();
   const colors = getThemeColors(theme);
-  const {
-    searchText,
-    isSearchOpen,
-    toggleSearch,
-    setSearchText,
-    resetSearchText,
-  } = useSearch();
+  const { isSearchOpen, toggleSearch, searchText } = useSearch();
 
   return (
     <div
       // style={{ backgroundColor: colors.background }}
-      className="min-h-screen  p-4 sm:p-8  text-foreground transition-colors duration-500 font-sans"
+      className="p-2 sm:p-8  text-foreground transition-colors duration-500 font-sans"
     >
-      <div className="flex justify-center min-lg:hidden">
-          {isSearchOpen && <Search />}
-      </div>
-    
+      {isSearchOpen && (
+        <div
+          className="flex justify-center min-lg:hidden  w-full px-3 py-6 mb-10 relative border rounded-lg "
+          style={{ backgroundColor: colors.card }}
+        >
+          <X
+            size={17}
+            className="absolute top-1 right-2"
+            onClick={toggleSearch}
+          />
+          <div className="w-full mt-3">
+            <Search />
+          </div>
+        </div>
+      )}
+      <div className="">{searchText}</div>
     </div>
   );
 };

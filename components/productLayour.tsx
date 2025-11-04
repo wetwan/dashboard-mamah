@@ -3,15 +3,19 @@
 import React from "react";
 import SideBar from "./sideBar";
 import MobileSideBar from "./mobileSideBar";
+import DashboardHeader from "./dashboardHeader";
 
 const ProductLayout = ({ children }: { children: React.ReactNode }) => {
   return (
-    <div className="flex relative">
-      <div>
-        <SideBar />
-        <MobileSideBar />
+    <div className="h-screen flex-col flex">
+      <DashboardHeader />
+      <div className="flex overflow-hidden flex-1">
+        <div className="h-full border overflow-hidden shrink-0">
+          <SideBar />
+          <MobileSideBar />
+        </div>
+        <main className="overflow-y-auto px-4 flex-1">{children}</main>
       </div>
-      <main className="flex-1">{children}</main>
     </div>
   );
 };
