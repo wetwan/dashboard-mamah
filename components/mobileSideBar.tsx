@@ -76,20 +76,21 @@ const MobileSideBar = () => {
                 // backgroundColor: colors.text2, // default
                 transition: "background-color 0.2s ease",
               }}
-              className={`w-full  mx-auto rounded-lg flex items-center gap-3 py-3 relative  border px-3 h-14 capitalize`}
+              className={`w-full  mx-auto rounded-lg flex items-center gap-3 py-3  border px-3 h-14 capitalize px-2`}
             >
               <Search color={colors.blue1} size={20} />
               <input
                 placeholder="Search"
-                className=" h-full px-1 text-balance  placeholder:text-gray-600 w-5/6 outline-none"
+                className=" h-full px-1 text-balance  placeholder:text-gray-600  w-4/6 outline-none"
                 value={searchText}
                 onChange={(e) => setSearchText(e.target.value)}
               />
               {searchText && (
                 <X
-                  className="absolute text-red-800 right-4 z-50 cursor-pointer"
+                  className="cursor-pointer"
                   onClick={resetSearchText}
                   size={17}
+                  color={colors.red1}
                 />
               )}
             </div>

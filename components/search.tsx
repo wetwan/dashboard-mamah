@@ -1,12 +1,14 @@
 "use client";
 
 import { useSearch } from "@/src/store/searchStore";
+import { useTheme } from "@/src/store/themeStore";
 import { SearchIcon, X } from "lucide-react";
 import React from "react";
 
 const Search = () => {
   const { searchText, isSearchOpen, setSearchText, resetSearchText } =
     useSearch();
+      const { colors } = useTheme();
 
   return (
     <div
@@ -23,7 +25,7 @@ const Search = () => {
         value={searchText}
         onChange={(e) => setSearchText(e.target.value)}
       />
-      {searchText && <X onClick={resetSearchText} size={17} />}
+      {searchText && <X onClick={resetSearchText} size={17} color={colors.red1} />}
       <SearchIcon className="mx-3" size={17} />
     </div>
   );
