@@ -74,7 +74,7 @@ function getPageNumbers(current: number, total: number) {
 
 export default function OrdersPage() {
   const [page, setPage] = useState(1);
-  const limit = 10;
+  const limit = 20;
 
   const { colors } = useTheme();
 
@@ -99,7 +99,7 @@ export default function OrdersPage() {
       <h1 className="text-2xl font-bold mb-4">Orders</h1>
 
       {/* Orders List */}
-      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
         {orders.map((order: Order) => (
           <div
             key={order._id}

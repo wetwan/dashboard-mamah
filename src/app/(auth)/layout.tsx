@@ -1,4 +1,5 @@
-import Logo from "@/components/logo";
+import LoginLayout from "@/components/loginLayout";
+import LoginNav from "@/components/loginNav";
 import { Metadata } from "next";
 
 export const metadata: Metadata = {
@@ -11,12 +12,11 @@ export default function RootLayout({
 }: Readonly<{
   children: React.ReactNode;
 }>) {
+  // const {colors} = useTheme();
   return (
-    <div className=" bg-gray-900 text-gray-50 transition-colors duration-300">
-      <nav className="border max-w-full py-5 flex  md:px-8 lg:px-16 xl:32 2xl:px-64 px-4 ">
-        <Logo />
-      </nav>
-      <main>{children}</main>
+    <div className="transition-colors duration-300">
+      <LoginNav />
+      <LoginLayout>{children}</LoginLayout>
     </div>
   );
 }

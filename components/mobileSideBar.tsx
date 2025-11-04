@@ -76,7 +76,7 @@ const MobileSideBar = () => {
                 // backgroundColor: colors.text2, // default
                 transition: "background-color 0.2s ease",
               }}
-              className={`w-full  mx-auto rounded-lg flex items-center gap-3 py-3  border px-3 h-14 capitalize px-2`}
+              className={`w-full  mx-auto rounded-lg flex items-center gap-3 py-3  border px-3 h-14 capitalize`}
             >
               <Search color={colors.blue1} size={20} />
               <input

@@ -84,7 +84,7 @@ const SideBar = () => {
       </div>
 
       <div className="w-full">
-        <div className="mb-5 w-full border p-1">
+        <div className="w-full my-4 p-1">
           {openSidebar ? (
             <div
               style={{

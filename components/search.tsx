@@ -25,7 +25,7 @@ const Search = () => {
         value={searchText}
         onChange={(e) => setSearchText(e.target.value)}
       />
-      {searchText && <X onClick={resetSearchText} size={17} color={colors.red1} />}
+      {searchText && <X onClick={resetSearchText} size={17} color={colors.red1} className="cursor-pointer" />}
       <SearchIcon className="mx-3" size={17} />
     </div>
   );

@@ -25,4 +25,6 @@ export interface ThemeColors {
   pink2: string;
   coral1: string;
   coral2: string;
+  gray1: string
+  gray2: string
 }
