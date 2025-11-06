@@ -1,18 +1,35 @@
-/* eslint-disable prefer-const */
 "use client";
 
+import React, { useState } from "react";
 import { useQuery } from "@tanstack/react-query";
-import { useState } from "react";
 import {
-  Pagination,
-  PaginationContent,
-  PaginationItem,
-  PaginationLink,
-  PaginationNext,
-  PaginationPrevious,
-} from "@/components/ui/pagination";
-import { useTheme } from "@/src/store/themeStore";
+  ColumnDef,
+  getCoreRowModel,
+  getFilteredRowModel,
+  getPaginationRowModel,
+  getSortedRowModel,
+  useReactTable,
+} from "@tanstack/react-table";
 
+import {
+  Table,
+  TableBody,
+  TableCell,
+  TableHead,
+  TableHeader,
+  TableRow,
+} from "@/components/ui/table";
+
+import { Input } from "@/components/ui/input";
+import { Button } from "@/components/ui/button";
+import { ArrowUpDown } from "lucide-react";
+import { useTheme } from "@/src/store/themeStore";
+import OrderCount from "@/components/orderCount";
+import SortOrder from "@/components/sortOrder";
+import OrderDetailsPage from "@/components/orderDetailsPage";
+import { useDetails } from "@/src/store/deatilsOpenStore";
+
+// Types
 interface OrderItem {
   name: string;
   qty: number;
@@ -22,12 +39,13 @@ interface OrderItem {
 interface ShippingAddress {
   fullName: string;
   email: string;
-  address1?: string;
-  address2?: string;
-  state?: string;
-  postalCode?: string;
-  country?: string;
-  phone?: string;
+}
+
+interface StatusCounts {
+  pending: number;
+  processing: number;
+  delivered: number;
+  cancelled: number;
 }
 
 interface Order {
@@ -41,154 +59,234 @@ interface Order {
 interface OrdersResponse {
   orders: Order[];
   totalPages: number;
-  totalCount?: number;
+  statusCounts: StatusCounts;
+  total: number;
 }
 
-function getPageNumbers(current: number, total: number) {
-  const delta = 2;
-  const range: (number | string)[] = [];
-  const rangeWithDots: (number | string)[] = [];
+// ✅ Columns with filterFn for global search
+export const columns: ColumnDef<Order>[] = [
+  {
+    id: "sn",
+    header: "S/N",
+    cell: ({ row }) => <span>{row.index + 1}</span>,
+  },
+  {
+    accessorKey: "_id",
+    header: "Order Id",
+    filterFn: "includesString",
+    cell: ({ row }) => row.original._id,
+  },
 
-  for (let i = 1; i <= total; i++) {
-    if (
-      i === 1 ||
-      i === total ||
-      (i >= current - delta && i <= current + delta)
-    ) {
-      range.push(i);
-    }
-  }
+  {
+    accessorKey: "shippingAddress.fullName",
+    filterFn: "includesString",
+    header: ({ column }) => (
+      <Button
+        variant="ghost"
+        onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
+        className="p-0 flex items-center gap-1 "
+      >
+        Customer <ArrowUpDown className="h-4 w-4" />
+      </Button>
+    ),
+    cell: ({ row }) => (
+      <span className="table-cell">
+        {row.original.shippingAddress.fullName}
+      </span>
+    ),
+  },
+  {
+    accessorKey: "shippingAddress.email",
+    filterFn: "includesString",
+    header: ({ column }) => (
+      <Button
+        variant="ghost"
+        onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
+        className="p-0 md:flex items-center gap-1 hidden "
+      >
+        Email <ArrowUpDown className="h-4 w-4" />
+      </Button>
+    ),
+    cell: ({ row }) => (
+      <span className="hidden md:table-cell">
+        {row.original.shippingAddress.email}
+      </span>
+    ),
+  },
+  {
+    accessorKey: "status",
+    header: "Status",
+    cell: ({ row }) => (
+      <span className="capitalize">{row.original.status}</span>
+    ),
+  },
+  {
+    accessorKey: "items",
+    header: "Items",
+    cell: ({ row }) => row.original.items.length,
+  },
+  {
+    accessorKey: "totalPrice",
+    header: "Total",
+    cell: ({ row }) => `$${row.original.totalPrice}`,
+  },
+];
 
-  let lastPage: number | undefined;
-  for (let i of range) {
-    if (typeof i === "number" && lastPage !== undefined) {
-      if (i - lastPage === 2) rangeWithDots.push(lastPage + 1);
-      else if (i - lastPage > 2) rangeWithDots.push("…");
-    }
-    rangeWithDots.push(i);
-    if (typeof i === "number") lastPage = i;
-  }
-
-  return rangeWithDots;
-}
-
-export default function OrdersPage() {
+export default function OrdersTable() {
   const [page, setPage] = useState(1);
-  const limit = 20;
-
+  const limit = 50;
   const { colors } = useTheme();
+  const { toggleDetails } = useDetails();
+  const [globalFilter, setGlobalFilter] = useState("");
 
   const { data, isLoading, isError } = useQuery<OrdersResponse>({
     queryKey: ["orders", page],
     queryFn: async () => {
       const res = await fetch(`/api/orders?page=${page}&limit=${limit}`);
-      if (!res.ok) throw new Error("Failed to fetch orders");
+      if (!res.ok) throw new Error("Failed to load orders");
       return res.json();
     },
-    placeholderData: (prev) => prev, // ✅ replaces keepPreviousData
+    placeholderData: (prev) => prev,
   });
 
-  if (isLoading) return <p className="p-4">Loading orders...</p>;
-  if (isError) return <p className="p-4 text-red-500">Error loading orders.</p>;
-  if (!data) return null;
+  const table = useReactTable({
+    data: data?.orders ?? [],
+    columns,
+    state: {
+      globalFilter,
+      pagination: {
+        pageIndex: 0,
+        pageSize: 70,
+      },
+    },
+    onGlobalFilterChange: setGlobalFilter,
+    getCoreRowModel: getCoreRowModel(),
+    getFilteredRowModel: getFilteredRowModel(), // ✅ enables global search
+    getSortedRowModel: getSortedRowModel(),
+    getPaginationRowModel: getPaginationRowModel(),
+  });
 
-  const { orders, totalPages, totalCount } = data;
+  const [sortOrder, setSortorder] = useState("all");
+
 
   return (
-    <div className="p-6 space-y-6">
-      <h1 className="text-2xl font-bold mb-4">Orders</h1>
+    <>
+      <div className="p-6 space-y-6">
+        <div className="">
+          <OrderCount data={data?.statusCounts} total={data?.total} />
+        </div>
+        <h1 className="text-2xl font-bold" style={{ color: colors.text2 }}>
+          Orders
+        </h1>
 
-      {/* Orders List */}
-      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
-        {orders.map((order: Order) => (
-          <div
-            key={order._id}
-            className="border rounded-lg p-4 shadow-sm bg-white"
-          >
-            <h2 className="text-lg font-semibold" style={{color:colors.text3}}>
-              {order.shippingAddress.fullName}
-            </h2>
+        {/* ✅ Single global search */}
+        <Input
+          placeholder="Search by id, name, or email..."
+          className="max-w-sm"
+          disabled={isLoading}
+          onChange={(e) => setGlobalFilter(e.target.value)}
+        />
+        <SortOrder sort={sortOrder} setSort={setSortorder} />
+        <div className="rounded-md border">
+          {isLoading && (
+            <div className="p-6 text-center flex-1">Loading...</div>
+          )}
+          {isError && (
+            <div className="p-6 text-center text-red-500">
+              Error loading orders.
+            </div>
+          )}
+
+          {!isLoading && !isError && data && (
+            <Table
+              style={{
+                color: colors.text2,
+                backgroundColor: colors.background,
+                borderColor: colors.background,
+                borderBlock: 1,
+              }}
+            >
+              <TableHeader>
+                {table.getHeaderGroups().map((hg) => (
+                  <TableRow key={hg.id} className="py-4">
+                    {hg.headers.map((header) => (
+                      <TableHead key={header.id} className="py-4 px-3">
+                        {header.isPlaceholder
+                          ? null
+                          : typeof header.column.columnDef.header === "function"
+                          ? header.column.columnDef.header({
+                              table,
+                              column: header.column,
+                              header,
+                            })
+                          : header.column.columnDef.header}
+                      </TableHead>
+                    ))}
+                  </TableRow>
+                ))}
+              </TableHeader>
+
+              <TableBody className="py-4">
+                {table.getRowModel().rows.length ? (
+                  table.getRowModel().rows.map((row) => (
+                    <TableRow
+                      key={row.id}
+                      className="py-4"
+                      onClick={() => toggleDetails()}
+                    >
+                      {row.getVisibleCells().map((cell) => (
+                        <TableCell key={cell.id} className="py-4 px-3">
+                          {typeof cell.column.columnDef.cell === "function"
+                            ? cell.column.columnDef.cell(cell.getContext())
+                            : cell.getValue()}
+                        </TableCell>
+                      ))}
+                    </TableRow>
+                  ))
+                ) : (
+                  <TableRow>
+                    <TableCell
+                      colSpan={columns.length}
+                      className="text-center py-6"
+                    >
+                      No results.
+                    </TableCell>
+                  </TableRow>
+                )}
+              </TableBody>
+            </Table>
+          )}
+        </div>
+
+        {/* Pagination */}
+        {!isLoading && data && (
+          <div className="flex justify-between items-center pt-4">
             <p className="text-sm text-gray-600">
-              {order.shippingAddress.email}
+              Page {page} of {data.totalPages}
             </p>
 
-            <div className="mt-2" style={{color:colors.text2}}>
-              <p>
-                Status: <span className="capitalize">{order.status}</span>
-              </p>
-              <p>Total: ${order.totalPrice}</p>
+            <div className="flex gap-2">
+              <Button
+                variant="outline"
+                size="sm"
+                disabled={page <= 1}
+                onClick={() => setPage((p) => p - 1)}
+              >
+                Previous
+              </Button>
+
+              <Button
+                variant="outline"
+                size="sm"
+                disabled={page >= data.totalPages}
+                onClick={() => setPage((p) => p + 1)}
+              >
+                Next
+              </Button>
             </div>
-
-            <ul className="mt-2 text-sm text-gray-700 list-disc pl-4">
-              {order.items.map((item: OrderItem, idx: number) => (
-                <li key={idx}>
-                  {item.name} ({item.qty}x) - ${item.price}
-                </li>
-              ))}
-            </ul>
           </div>
-        ))}
-      </div>
-
-      {/* Pagination */}
-      <div className="flex flex-col items-center mt-6 space-y-2">
-        <Pagination>
-          <PaginationContent>
-            {/* Prev */}
-            <PaginationItem>
-              <PaginationPrevious
-                href="#"
-                onClick={(e) => {
-                  e.preventDefault();
-                  setPage((prev) => Math.max(prev - 1, 1));
-                }}
-                className={page === 1 ? "pointer-events-none opacity-50" : ""}
-              />
-            </PaginationItem>
-
-            {/* Dynamic Page Numbers */}
-            {getPageNumbers(page, totalPages).map((p, i) => (
-              <PaginationItem key={i}>
-                {p === "…" ? (
-                  <span className="px-3 text-gray-500">…</span>
-                ) : (
-                  <PaginationLink
-                    href="#"
-                    isActive={page === p}
-                    onClick={(e) => {
-                      e.preventDefault();
-                      setPage(p as number);
-                    }}
-                  >
-                    {p}
-                  </PaginationLink>
-                )}
-              </PaginationItem>
-            ))}
-
-            {/* Next */}
-            <PaginationItem>
-              <PaginationNext
-                href="#"
-                onClick={(e) => {
-                  e.preventDefault();
-                  setPage((prev) => Math.min(prev + 1, totalPages));
-                }}
-                className={
-                  page === totalPages ? "pointer-events-none opacity-50" : ""
-                }
-              />
-            </PaginationItem>
-          </PaginationContent>
-        </Pagination>
-
-        {totalCount && (
-          <p className="text-sm text-gray-600">
-            Showing {(page - 1) * limit + 1}–
-            {Math.min(page * limit, totalCount)} of {totalCount} results
-          </p>
         )}
       </div>
-    </div>
+    </>
   );
 }

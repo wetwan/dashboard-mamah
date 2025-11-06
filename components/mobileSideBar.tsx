@@ -48,7 +48,7 @@ const MobileSideBar = () => {
                 key={name}
                 href={link}
                 style={{
-                  backgroundColor: active ? colors.coral1 : colors.card,
+                  backgroundColor: active ? colors.primary : colors.card,
                 }}
                 className="mt-3 rounded-lg flex items-center gap-3 py-3 px-3 h-14 capitalize"
               >
@@ -60,7 +60,7 @@ const MobileSideBar = () => {
                 href={link}
                 key={name}
                 style={{
-                  backgroundColor: active ? colors.coral1 : colors.card,
+                  backgroundColor: active ? colors.primary : colors.card,
                 }}
                 className="mt-3 h-14 w-14 flex items-center justify-center rounded-lg"
               >

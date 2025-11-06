@@ -22,6 +22,8 @@ export const lightColors: ThemeColors = {
     coral2: "#FF8C80",
     gray1: '#f3f4f6',
     gray2: '#99a1af',
+    purple1: '#8f86ed',
+    purple2: '#938bef'
 };
 
 export const darkColors: ThemeColors = {
@@ -44,8 +46,9 @@ export const darkColors: ThemeColors = {
     pink2: "#FF7F9C",
     coral1: "#FF6B61",
     coral2: "#FF8C80",
-
-    gray1: '#1e2939', gray2: '#4a5565'
+    gray1: '#1e2939', gray2: '#4a5565',
+    purple1: '#5a52b7',
+    purple2:'#423a8c'
 
 };
 

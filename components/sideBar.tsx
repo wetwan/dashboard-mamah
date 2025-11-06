@@ -47,7 +47,7 @@ const SideBar = () => {
                   backgroundColor: isHovered
                     ? colors.text3 // hovered item
                     : active
-                    ? colors.coral1 // active page
+                    ? colors.primary // active page
                     : colors.card, // default
                   transition: "background-color 0.2s ease",
                 }}
@@ -71,7 +71,7 @@ const SideBar = () => {
                   backgroundColor: isHovered
                     ? colors.text3 // hovered item
                     : active
-                    ? colors.coral1 // active page
+                    ? colors.primary // active page
                     : colors.card, // default
                 }}
                 className="mt-3 h-14 w-14 flex items-center justify-center rounded-lg"

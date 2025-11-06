@@ -27,4 +27,6 @@ export interface ThemeColors {
   coral2: string;
   gray1: string
   gray2: string
+  purple1: string
+  purple2: string
 }

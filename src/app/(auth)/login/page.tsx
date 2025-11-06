@@ -71,7 +71,7 @@
 
 //             <div className="mb-5">
 //               <div className="bg-gray-300 flex  gap-3 items-center pl-3 md:w-[400px] w-[300px] mb-2 focus-within:bg-white border  focus-within:text-[#7971ea] focus-within:border-[#7971ea]">
-//                 <Mail size={20} color="gray" />
+//                 <Mail size={20} color={colors.text3} color="gray" />
 //                 <input
 //                   placeholder="email"
 //                   className="placeholder:capitalize outline-none py-5 w-full"
@@ -87,7 +87,7 @@
 //             </div>
 //             <div className="mb-5">
 //               <div className="bg-gray-300 flex  gap-3 items-center px-3 md:w-[400px] w-[300px] mb-2 focus-within:bg-white border  focus-within:text-[#7971ea] focus-within:border-[#7971ea]">
-//                 <Lock size={20} color="gray" />
+//                 <Lock size={20} color={colors.text3} color="gray" />
 //                 <input
 //                   placeholder="password"
 //                   className="placeholder:capitalize outline-none py-5 w-full"
@@ -96,9 +96,9 @@
 //                 />
 //                 <p onClick={() => setPasswordShow((prev) => !prev)}>
 //                   {passwordShow ? (
-//                     <EyeClosed size={20} color="gray" />
+//                     <EyeClosed size={20} color={colors.text3} color="gray" />
 //                   ) : (
-//                     <Eye size={20} color="gray" />
+//                     <Eye size={20} color={colors.text3} color="gray" />
 //                   )}
 //                 </p>
 //               </div>
@@ -165,7 +165,7 @@ const Login = () => {
               className="flex items-center gap-3 px-3 py-4 w-full bborder rounded focus-within:ring-2 focus-within:ring-[#7971ea] transition-colors duration-300"
               style={{ backgroundColor: colors.gray2 }}
             >
-              <Mail size={20} />
+              <Mail size={20} color={colors.text3} />
               <input
                 type="email"
                 placeholder="Email"
@@ -179,7 +179,7 @@ const Login = () => {
               className="flex items-center gap-3 px-3 py-4 w-full bg-gray-100 dark:bg-gray-700 border rounded focus-within:ring-2 focus-within:ring-[#7971ea] transition-colors duration-300"
               style={{ backgroundColor: colors.gray2 }}
             >
-              <Lock size={20} />
+              <Lock size={20} color={colors.text3} />
               <input
                 type={passwordShow ? "text" : "password"}
                 placeholder="Password"
@@ -190,18 +190,37 @@ const Login = () => {
                 onClick={() => setPasswordShow((prev) => !prev)}
                 className="focus:outline-none"
               >
-                {passwordShow ? <EyeClosed size={20} /> : <Eye size={20} />}
+                {passwordShow ? <EyeClosed size={20} color={colors.text3} /> : <Eye size={20} color={colors.text3} />}
               </button>
             </div>
           </div>
 
-          <button className="w-full py-4 mt-4 bg-[#7971ea] text-white font-bold text-lg rounded hover:bg-white hover:text-[#7971ea] hover:border hover:border-[#7971ea] transition-colors duration-300">
+          <button
+            className="
+    w-full py-4 mt-4 font-bold text-lg rounded border border-transparent transition-colors duration-300 bg-[var(--bg)] text-[var(--text)] hover:bg-[var(--hover-bg)] hover:text-[var(--hover-text)] hover:border-[var(--bg)]
+  "
+            style={
+              {
+                "--bg": colors.purple2,
+                "--hover-bg": "white",
+                "--text": "white",
+                "--hover-text": colors.purple1,
+              } as React.CSSProperties
+            }
+          >
             Login
           </button>
 
-          <p className="mt-6 text-center text-sm" style={{color:colors.text3}}>
+          <p
+            className="mt-6 text-center text-sm"
+            style={{ color: colors.text3 }}
+          >
             Not a user yet?{" "}
-            <Link href="/signup" className="text-[#7971ea] font-medium">
+            <Link
+              href="/signup"
+              className="font-medium"
+              style={{ color: colors.purple1 }}
+            >
               Sign up!
             </Link>
           </p>

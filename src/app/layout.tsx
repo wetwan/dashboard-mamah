@@ -27,10 +27,11 @@ export default function RootLayout({
   return (
     <html lang="en" suppressHydrationWarning>
       <body
-        className={`${outFitSans.variable} ${geistSans.variable} ${geistMono.variable} antialiased transition-colors duration-300 h-screen`}
+        className={`${outFitSans.variable} absolute ${geistSans.variable} ${geistMono.variable} antialiased transition-colors duration-300 h-screen`}
       >
         <ReactQueryProvider>
           <ThemeProvider>
+        
             <DashboardLayout>{children}</DashboardLayout>
           </ThemeProvider>
         </ReactQueryProvider>

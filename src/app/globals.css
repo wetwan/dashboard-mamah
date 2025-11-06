@@ -12,6 +12,10 @@ body,
   @apply text-gray-950
 }
 
+::-webkit-scrollbar {
+  @apply hidden
+}
+
 @theme inline {
   --color-background: var(--background);
   --color-foreground: var(--foreground);

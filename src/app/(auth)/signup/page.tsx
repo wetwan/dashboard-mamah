@@ -195,7 +195,19 @@ const SignUp = () => {
             </div>
           </div>
 
-          <button className="w-full py-4 mt-4 bg-[#7971ea] text-white font-bold text-lg rounded hover:bg-white hover:text-[#7971ea] hover:border hover:border-[#7971ea] transition-colors duration-300">
+          <button
+            className="
+              w-full py-4 mt-4 font-bold text-lg rounded border border-transparent transition-colors duration-300 bg-[var(--bg)] text-[var(--text)] hover:bg-[var(--hover-bg)] hover:text-[var(--hover-text)] hover:border-[var(--bg)]
+            "
+            style={
+              {
+                "--bg": colors.purple2,
+                "--hover-bg": "white",
+                "--text": "white",
+                "--hover-text": colors.purple1,
+              } as React.CSSProperties
+            }
+          >
             Sign Up
           </button>
 
@@ -204,7 +216,11 @@ const SignUp = () => {
             style={{ color: colors.text3 }}
           >
             Not a user yet?{" "}
-            <Link href="/login" className="text-[#7971ea] font-medium">
+            <Link
+              href="/login"
+              className="text-[#7971ea] font-medium"
+              style={{ color: colors.purple2 }}
+            >
               {" "}
               Login!
             </Link>
