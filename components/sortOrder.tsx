@@ -1,17 +1,12 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import { useTheme } from "@/src/store/themeStore";
 import React from "react";
 
 interface sortType {
   sort: string;
-  setSort: React.Dispatch<React.SetStateAction<string>>;
+  setSort: (newStatus: any) => void;
 }
 
-interface StatusCounts {
-  pending: number;
-  processing: number;
-  delivered: number;
-  cancelled: number;
-}
 
 const SortOrder = ({ setSort, sort }: sortType) => {
   const { colors } = useTheme();
@@ -23,7 +18,7 @@ const SortOrder = ({ setSort, sort }: sortType) => {
           style={{
             backgroundColor: colors.gray1,
             borderWidth: sort === "all" ? 2 : 0,
-            borderColor: colors.gray2
+            borderColor: colors.gray2,
           }}
           onClick={() => setSort("all")}
         >
@@ -34,7 +29,7 @@ const SortOrder = ({ setSort, sort }: sortType) => {
           style={{
             backgroundColor: colors.yellow1,
             borderWidth: sort === "pending" ? 2 : 0,
-                borderColor: colors.yellow2
+            borderColor: colors.yellow2,
           }}
           onClick={() => setSort("pending")}
         >
@@ -45,7 +40,7 @@ const SortOrder = ({ setSort, sort }: sortType) => {
           style={{
             backgroundColor: colors.blue1,
             borderWidth: sort === "processing" ? 2 : 0,
-                borderColor: colors.blue2
+            borderColor: colors.blue2,
           }}
           onClick={() => setSort("processing")}
         >
@@ -56,7 +51,7 @@ const SortOrder = ({ setSort, sort }: sortType) => {
           style={{
             backgroundColor: colors.green1,
             borderWidth: sort === "delivered" ? 2 : 0,
-                borderColor: colors.green2
+            borderColor: colors.green2,
           }}
           onClick={() => setSort("delivered")}
         >
@@ -67,7 +62,7 @@ const SortOrder = ({ setSort, sort }: sortType) => {
           style={{
             backgroundColor: colors.red1,
             borderWidth: sort === "cancelled" ? 2 : 0,
-                borderColor: colors.red2
+            borderColor: colors.red2,
           }}
           onClick={() => setSort("cancelled")}
         >

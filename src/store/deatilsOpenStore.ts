@@ -10,14 +10,11 @@ interface DetailsStore {
     setDetails: (details: Details) => void;
 }
 
-export const useDetails = create<DetailsStore>()(
-
-    (set) => ({
-        details: "close",
-        toggleDetails: () =>
-            set((state) => ({ details: state.details === "open" ? "close" : "open" })),
-        setDetails: (details) => set({ details }),
-    }),
 
 
-);
+export const useDetails = create<DetailsStore>()((set) => ({
+    details: "close",
+    toggleDetails: () =>
+        set((state) => ({ details: state.details === "open" ? "close" : "open" })),
+    setDetails: (details) => set({ details }),
+}));

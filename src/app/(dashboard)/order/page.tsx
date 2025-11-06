@@ -1,11 +1,11 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 "use client";
 
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { useQuery } from "@tanstack/react-query";
 import {
   ColumnDef,
   getCoreRowModel,
-  getFilteredRowModel,
   getPaginationRowModel,
   getSortedRowModel,
   useReactTable,
@@ -26,8 +26,9 @@ import { ArrowUpDown } from "lucide-react";
 import { useTheme } from "@/src/store/themeStore";
 import OrderCount from "@/components/orderCount";
 import SortOrder from "@/components/sortOrder";
-import OrderDetailsPage from "@/components/orderDetailsPage";
+
 import { useDetails } from "@/src/store/deatilsOpenStore";
+import OrderDetailsPage from "@/components/orderDetailsPage";
 
 // Types
 interface OrderItem {
@@ -73,13 +74,11 @@ export const columns: ColumnDef<Order>[] = [
   {
     accessorKey: "_id",
     header: "Order Id",
-    filterFn: "includesString",
     cell: ({ row }) => row.original._id,
   },
 
   {
     accessorKey: "shippingAddress.fullName",
-    filterFn: "includesString",
     header: ({ column }) => (
       <Button
         variant="ghost"
@@ -97,7 +96,6 @@ export const columns: ColumnDef<Order>[] = [
   },
   {
     accessorKey: "shippingAddress.email",
-    filterFn: "includesString",
     header: ({ column }) => (
       <Button
         variant="ghost"
@@ -128,49 +126,82 @@ export const columns: ColumnDef<Order>[] = [
   {
     accessorKey: "totalPrice",
     header: "Total",
-    cell: ({ row }) => `$${row.original.totalPrice}`,
+    cell: ({ row }) => `#${row.original.totalPrice}`,
   },
 ];
 
 export default function OrdersTable() {
-  const [page, setPage] = useState(1);
   const limit = 50;
   const { colors } = useTheme();
   const { toggleDetails } = useDetails();
+
+  const [page, setPage] = useState(1);
+
   const [globalFilter, setGlobalFilter] = useState("");
 
+  const [debouncedFilter, setDebouncedFilter] = useState("");
+  const [sortOrder, setSortorder] = useState("all");
+
+  const [selectedOrderId, setSelectedOrderId] = useState<string | null>(null);
+
+  const handleSetSortOrder = (newStatus: any) => {
+    if (newStatus !== sortOrder) {
+      setSortorder(newStatus);
+      setPage(1); // Reset page to 1 when status filter changes
+    }
+  };
+
+  useEffect(() => {
+    const handler = setTimeout(() => {
+      // If the filter has actually changed, reset pagination before applying the filter
+      if (globalFilter !== debouncedFilter) {
+        setPage(1);
+      }
+      setDebouncedFilter(globalFilter);
+    }, 300);
+
+    return () => {
+      clearTimeout(handler);
+    };
+  }, [globalFilter, debouncedFilter]); // Depend on both to detect actual changes
+
   const { data, isLoading, isError } = useQuery<OrdersResponse>({
-    queryKey: ["orders", page],
+    queryKey: ["orders", page, debouncedFilter, sortOrder],
     queryFn: async () => {
-      const res = await fetch(`/api/orders?page=${page}&limit=${limit}`);
+      let url = `/api/orders?page=${page}&limit=${limit}&q=${debouncedFilter}`;
+
+      if (sortOrder && sortOrder !== "all") {
+        url += `&status=${sortOrder}`;
+      }
+
+      const res = await fetch(url);
       if (!res.ok) throw new Error("Failed to load orders");
       return res.json();
     },
     placeholderData: (prev) => prev,
   });
-
   const table = useReactTable({
     data: data?.orders ?? [],
     columns,
     state: {
-      globalFilter,
+      // globalFilter state is only for the input field, not for table logic
+      // because filtering is server-side.
       pagination: {
         pageIndex: 0,
-        pageSize: 70,
+        pageSize: limit,
       },
     },
-    onGlobalFilterChange: setGlobalFilter,
+    // Removed onGlobalFilterChange and getFilteredRowModel
     getCoreRowModel: getCoreRowModel(),
-    getFilteredRowModel: getFilteredRowModel(), // ✅ enables global search
     getSortedRowModel: getSortedRowModel(),
     getPaginationRowModel: getPaginationRowModel(),
   });
-
-  const [sortOrder, setSortorder] = useState("all");
-
+  const { details } = useDetails();
+  const open = details === "open";
 
   return (
     <>
+      {open && <OrderDetailsPage id={selectedOrderId} />}
       <div className="p-6 space-y-6">
         <div className="">
           <OrderCount data={data?.statusCounts} total={data?.total} />
@@ -184,9 +215,10 @@ export default function OrdersTable() {
           placeholder="Search by id, name, or email..."
           className="max-w-sm"
           disabled={isLoading}
+          value={globalFilter} // Value tracks immediate input
           onChange={(e) => setGlobalFilter(e.target.value)}
         />
-        <SortOrder sort={sortOrder} setSort={setSortorder} />
+        <SortOrder sort={sortOrder} setSort={handleSetSortOrder} />
         <div className="rounded-md border">
           {isLoading && (
             <div className="p-6 text-center flex-1">Loading...</div>
@@ -232,7 +264,10 @@ export default function OrdersTable() {
                     <TableRow
                       key={row.id}
                       className="py-4"
-                      onClick={() => toggleDetails()}
+                      onClick={() => {
+                        setSelectedOrderId(row.original._id);
+                        toggleDetails();
+                      }}
                     >
                       {row.getVisibleCells().map((cell) => (
                         <TableCell key={cell.id} className="py-4 px-3">
