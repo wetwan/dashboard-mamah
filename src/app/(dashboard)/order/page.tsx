@@ -180,6 +180,8 @@ export default function OrdersTable() {
     },
     placeholderData: (prev) => prev,
   });
+
+  console.log(data);
   const table = useReactTable({
     data: data?.orders ?? [],
     columns,

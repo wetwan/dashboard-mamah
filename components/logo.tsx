@@ -10,7 +10,7 @@ const Logo = () => {
   return (
     <div
       style={{ color: colors.primary }}
-      className="flex items-center justify-center border-gray-500 uppercase text-[20px] my-2 p-4 py-2  border-2 rounded cursor-pointer tracking-wide"
+      className="flex flex-1 items-center justify-center border-gray-500 uppercase text-[20px] my-2 p-4 py-2  border-2 rounded cursor-pointer tracking-wide"
       onClick={() => {
         router.push("/");
         scrollTo(0, 0);
